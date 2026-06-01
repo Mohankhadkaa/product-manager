@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Manager</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Product Manager</h1>
+            <a th:href="@{/products/new}" class="btn btn-primary">+ Add Product</a>
+        </header>
+
+        <section class="filters">
+            <form th:action="@{/products/search}" method="get" class="search-form">
+                <input type="text" name="keyword" placeholder="Search by name..." th:value="${searchKeyword}">
+                <button type="submit" class="btn">Search</button>
+            </form>
+
+            <form th:action="@{/products/category}" method="get" class="filter-form">
+                <select name="category">
+                    <option value="">All Categories</option>
+                    <option th:each="cat : ${categories}" th:value="${cat}" th:text="${cat}"
+                            th:selected="${cat == selectedCategory}"></option>
+                </select>
+                <button type="submit" class="btn">Filter</button>
+            </form>
+
+            <form th:action="@{/products/price-range}" method="get" class="price-form">
+                <input type="number" name="minPrice" placeholder="Min price" th:value="${minPrice}" required>
+                <span>to</span>
+                <input type="number" name="maxPrice" placeholder="Max price" th:value="${maxPrice}" required>
+                <button type="submit" class="btn">Go</button>
+            </form>
+
+            <a th:href="@{/products/sort/price-desc}" class="btn btn-secondary">Sort by Price ↓</a>
+        </section>
+
+        <section class="product-grid">
+            <div th:each="product : ${products}" class="product-card">
+                <div class="product-image">
+                    <img th:if="${product.imageUrl}" th:src="${product.imageUrl}" alt="product image">
+                    <div th:unless="${product.imageUrl}" class="no-image">No Image</div>
+                </div>
+                <div class="product-info">
+                    <h3 th:text="${product.name}">Product Name</h3>
+                    <p class="category" th:text="${product.category}">Category</p>
+                    <p class="price" th:text="'$' + ${product.price}">$0</p>
+                    <p class="description" th:text="${product.description}">Description</p>
+                </div>
+                <div class="product-actions">
+                    <a th:href="@{/products/{id}(id=${product.id})}" class="btn btn-sm">View</a>
+                    <a th:href="@{/products/edit/{id}(id=${product.id})}" class="btn btn-sm btn-edit">Edit</a>
+                    <a th:href="@{/products/delete/{id}(id=${product.id})}" class="btn btn-sm btn-danger"
+                       onclick="return confirm('Delete this product?')">Delete</a>
+                </div>
+            </div>
+
+            <div th:if="${#lists.isEmpty(products)}" class="empty-state">
+                <p>No products found.</p>
+                <a th:href="@{/products/new}" class="btn btn-primary">Add your first product</a>
+            </div>
+        </section>
+    </div>
+</body>
+</html>

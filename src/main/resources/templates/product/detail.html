@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${product.name} + ' | Product Manager'">Product Detail</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1 th:text="${product.name}">Product Name</h1>
+            <div class="header-actions">
+                <a th:href="@{/products}" class="btn btn-secondary">Back to List</a>
+                <a th:href="@{/products/edit/{id}(id=${product.id})}" class="btn btn-primary">Edit</a>
+                <a th:href="@{/products/delete/{id}(id=${product.id})}" class="btn btn-danger"
+                   onclick="return confirm('Delete this product?')">Delete</a>
+            </div>
+        </header>
+
+        <div class="detail-card">
+            <div class="detail-image">
+                <img th:if="${product.imageUrl}" th:src="${product.imageUrl}" alt="product image">
+                <div th:unless="${product.imageUrl}" class="no-image">No Image</div>
+            </div>
+            <div class="detail-info">
+                <div class="detail-row">
+                    <span class="label">ID</span>
+                    <span class="value" th:text="${product.id}">1</span>
+                </div>
+                <div class="detail-row">
+                    <span class="label">Category</span>
+                    <span class="value" th:text="${product.category}">Category</span>
+                </div>
+                <div class="detail-row">
+                    <span class="label">Price</span>
+                    <span class="value price" th:text="'$' + ${product.price}">$0</span>
+                </div>
+                <div class="detail-row description-row">
+                    <span class="label">Description</span>
+                    <span class="value" th:text="${product.description}">Description text</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

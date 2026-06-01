@@ -1,0 +1,4 @@
+{
+  "buildCommand": "./gradlew clean bootJar",
+  "startCommand": "java -jar build/libs/*.jar"
+}
